@@ -6,8 +6,9 @@ const Cart = (props) => {
     // const total =cart.reduce((total, prd) => total + prd.price, 0)
     let total=0;
     for (let i = 0; i < cart.length; i++) {
-        const element = cart[i];
-        total =total + element.price;
+        const product = cart[i];
+        total =total + product.price * product.quantity;
+       
     }
     let shippingCost=0;
 
