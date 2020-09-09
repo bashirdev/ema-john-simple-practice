@@ -4,14 +4,17 @@ import fakeData from '../../fakeData';
 import ReviewItem from '../ReviewItem/ReviewItem';
 import Cart from '../Cart/Cart';
 import happyImage from '../../images/giphy.gif';
+import { useHistory } from 'react-router-dom';
 const Review = (props) => {
 
      const [cart,setCart] = useState([]);
    const [orderPlaced,setOderPlaced] = useState(false)
-   const handlePlaceoder =()=>{
-       setCart([]);
-       setOderPlaced(true)
-    clearLocalShoppingCart()
+   const history =useHistory();
+   const handleProceedCheckout =()=>{
+    //    setCart([]);
+    //    setOderPlaced(true)
+    // clearLocalShoppingCart()
+    history.push('/shipment')
    }
 
      useEffect(() => {
@@ -56,7 +59,7 @@ const Review = (props) => {
        </div>
        <div className="cart-container">
            <Cart cart={cart}>
-               <button className="add-btn" onClick={handlePlaceoder}>Place Oder</button>
+               <button className="add-btn" onClick={handleProceedCheckout}>Proceed Checkout</button>
            </Cart>
        </div>
         </div>
