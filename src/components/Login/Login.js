@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useContext } from 'react';
 import { userContext } from '../../App';
 import { useHistory, useLocation } from 'react-router-dom';
-import {initializeLoginrFramework, handleSignin, handleSignOut } from './LoginManager';
+import {initializeLoginrFramework, handleSignin, handleSignOut, createUserAndPassword, signInWithEmailAndPassword } from './LoginManager';
 
 
 function Login() {
@@ -25,9 +25,7 @@ function Login() {
  const googleSignIn=()=>{
     handleSignin()
     .then(res=> {
-        setUser(res)
-        setLoggedInUser(res);
-        history.replace(from);
+        handleResponse(res,true);
     })
 
  }
@@ -35,8 +33,7 @@ function Login() {
  const signOut=()=>{
     handleSignOut()
     .then(res=>{
-        setUser(res);
-        setLoggedInUser(res)
+        handleResponse(res, false)
     })
  }
 
@@ -61,14 +58,28 @@ function Login() {
           setUser(newUserInfo);
          }
   }
+  const handleResponse=(res, redirect)=>{
+    setUser(res)
+    setLoggedInUser(res);
+    if(redirect){
+        history.replace(from);
+    }
+   
+  }
 
   const handleSubmit=(e)=>{
     console.log(user.email, user.password);
       if(newUser && user.email && user.password){
-    
+           createUserAndPassword(user.name, user.email,user.password)
+           .then(res=> {
+            handleResponse(res,true);
+           })
       }
       if(!newUser && user.email && user.password){
-      
+        signInWithEmailAndPassword(user.email, user.password)
+         .then(res=>{
+            handleResponse(res,true);
+         })
       }
       e.preventDefault();
   }
