@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useContext } from 'react';
 import { userContext } from '../../App';
 import { useHistory, useLocation } from 'react-router-dom';
+import {initializeLoginrFramework, handleSignin, handleSignOut } from './LoginManager';
 
 
 function Login() {
@@ -14,13 +15,30 @@ function Login() {
     password:'',
     photo:''
   });
+  initializeLoginrFramework();
 
   const [loggedInUser, setLoggedInUser] = useContext(userContext);
   const history =useHistory();
   const location= useLocation()
+  let { from } = location.state || { from: { pathname: "/" } };
 
+ const googleSignIn=()=>{
+    handleSignin()
+    .then(res=> {
+        setUser(res)
+        setLoggedInUser(res);
+        history.replace(from);
+    })
 
+ }
 
+ const signOut=()=>{
+    handleSignOut()
+    .then(res=>{
+        setUser(res);
+        setLoggedInUser(res)
+    })
+ }
 
   const handleBlur =(event)=>{
   
@@ -58,7 +76,7 @@ function Login() {
 
   return (
     <div style={{textAlign:'center'}}>
-  { user.isSignIn ? <button onClick={handleSignOut}>Sign out</button> : <button onClick={handleSignin}>Sign in</button>} 
+  { user.isSignIn ? <button onClick={signOut}>Sign out</button> : <button onClick={googleSignIn}>Sign in</button>} 
   <br/>
   <button >Log in using Facebook</button>
 

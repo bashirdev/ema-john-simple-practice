@@ -1,15 +1,17 @@
-import React from 'react';
+// import React from 'react';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from './firebase.config';
 
 export const initializeLoginrFramework = () => {
+ if(firebase.apps.length ===0){
     firebase.initializeApp(firebaseConfig)
+ }
 }
 
  export const handleSignin=()=>{
     const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
+    return firebase.auth().signInWithPopup(provider)
     .then(res => {
       const {displayName, photoURL,email} =res.user;
       const signedInUser={
@@ -19,7 +21,7 @@ export const initializeLoginrFramework = () => {
         photo:photoURL
        
       }
-      setUser(signedInUser)
+      return signedInUser;
     }).catch(err => {
       console.log(err);
       console.log(err.message);
@@ -27,7 +29,7 @@ export const initializeLoginrFramework = () => {
      }
 
      export const handleSignOut=()=>{
-        firebase.auth().signOut()
+       return firebase.auth().signOut()
         .then(res =>{
             const signedOutuser={
               isSignIn:false,
@@ -37,65 +39,65 @@ export const initializeLoginrFramework = () => {
               error:'',
               success:''
             }
-            setUser(signedOutuser)
+            return signedOutuser;
         }).catch(err=>{
           console.log(err);
         })
       }
-export const createUserAndPassword=()=>{
-    firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-    .then(res=>{
-      const newUserInfo={...user};
-      newUserInfo.error='';
-      newUserInfo.success=true;
-      setUser(newUserInfo);
-      updateUserInfo(user.name)
-    })
-    .catch(error => {
-      // Handle Errors here.
-      const newUserInfo={...user};
-      newUserInfo.error=error.message;
-      newUserInfo.success=false;
-      setUser(newUserInfo);
+// export const createUserAndPassword=()=>{
+//    export firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+//     .then(res=>{
+//       const newUserInfo={...user};
+//       newUserInfo.error='';
+//       newUserInfo.success=true;
+//       setUser(newUserInfo);
+//       updateUserInfo(user.name)
+//     })
+//     .catch(error => {
+//       // Handle Errors here.
+//       const newUserInfo={...user};
+//       newUserInfo.error=error.message;
+//       newUserInfo.success=false;
+//       setUser(newUserInfo);
      
     
-      // ...
-    });
-}
+//       // ...
+//     });
+// }
 
 
 
-export const signInWithandPassword=()=>{
-    firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-    .then(res=>{
-      const newUserInfo={...user};
-      newUserInfo.error='';
-      newUserInfo.success=true;
-      setUser(newUserInfo);
-      setLoggedInUser(newUserInfo);
-      history.replace(from);
-      console.log('sign in user info', res.user);
-    })
-    .catch(error=> {
-      // Handle Errors here.
-      const newUserInfo={...user};
-      newUserInfo.error=error.message;
-      newUserInfo.success=false;
-      setUser(newUserInfo);
+// export const signInWithandPassword=()=>{
+//     firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+//     .then(res=>{
+//       const newUserInfo={...user};
+//       newUserInfo.error='';
+//       newUserInfo.success=true;
+//       setUser(newUserInfo);
+//       setLoggedInUser(newUserInfo);
+//       history.replace(from);
+//       console.log('sign in user info', res.user);
+//     })
+//     .catch(error=> {
+//       // Handle Errors here.
+//       const newUserInfo={...user};
+//       newUserInfo.error=error.message;
+//       newUserInfo.success=false;
+//       setUser(newUserInfo);
      
-      // ...
-    });
-}
+//       // ...
+//     });
+// }
 
-const updateUserInfo= name =>{
-    const user = firebase.auth().currentUser;
-   user.updateProfile({
-  displayName: name
+// const updateUserInfo= name =>{
+//     const user = firebase.auth().currentUser;
+//    user.updateProfile({
+//   displayName: name
 
-}).then(function() {
-  console.log('user name updete successfully');
-}).catch(function(error) {
-  console.log(error);
-});
-  }
+// }).then(function() {
+//   console.log('user name updete successfully');
+// }).catch(function(error) {
+//   console.log(error);
+// });
+//   }
 
